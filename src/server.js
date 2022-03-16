@@ -2,6 +2,7 @@ import express  from "express";
 import connectDB from "./database/dataconn.js";
 import router from "./router/router.js";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ app.get("/", (req, res) => {
 app.get("*", (req, res) => {
   res.status(404).send("Page not Found")
 })
-
+app.use(cors())
 
 const port = process.env.PORT
 app.listen(port, () => {

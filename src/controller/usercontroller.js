@@ -95,11 +95,11 @@ const loginUser = async (req, res) => {
                     role: userFound.role,
                     firstName: userFound.firstName})
 
-                res.json({
+                res.status(201).json({
                     message: `welcome ${userFound.firstName}`, token
             });
             } else {
-            res.json({
+            res.status(403).json({
                 error: "Incorrect Password",
             });
             }

@@ -96,7 +96,8 @@ const loginUser = async (req, res) => {
                     firstName: userFound.firstName})
 
                 res.status(201).json({
-                    message: `welcome ${userFound.firstName}`, token
+                    message: `welcome ${userFound.firstName}`, token, 
+                    role: userFound.role
             });
             } else {
             res.status(403).json({

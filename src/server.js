@@ -12,7 +12,7 @@ app.use( express.json());
 app.use(cors())
 app.use( router );
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to my API")
+  res.status(200).send("Welcome to my API").style.fontSize("50px")
 })
 app.get("*", (req, res) => {
   res.status(404).send("Page not Found")

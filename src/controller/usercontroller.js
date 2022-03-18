@@ -139,7 +139,7 @@ const logout = async (req, res) => {
 const getUserInfo = async (req, res) => {
     const userId = req.user.userId;
     try {
-      const OneUser = await userSchema.getOneUser({ _id: userId });
+      const OneUser = await userSchema.findOne({ _id: userId });
       if (!OneUser)
         return res.status(404).json({ error: `User with this Id:  ${userId} doesn't exit` });
       res.status(200).json({

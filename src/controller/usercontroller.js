@@ -134,6 +134,27 @@ const logout = async (req, res) => {
   }
 };
 
+
+// get user info
+const getUserInfo = async (req, res) => {
+    const userId = req.user.userId;
+    try {
+      const OneUser = await userSchema.getOneUser({ _id: userId });
+      if (!OneUser)
+        return res.status(404).json({ error: `User with this Id:  ${userId} doesn't exit` });
+      res.status(200).json({
+        message: "User retrevied succcessfully",
+        data: OneUser,
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: "Internal Server error",
+      });
+      console.log(error);
+    }
+  };
+
+
 export {
-    addnewUser, getAllUser, getOneUser, deteleUser, updateUser, loginUser, logout
+    addnewUser, getAllUser, getOneUser, deteleUser, updateUser, loginUser, getUserInfo, logout
 }

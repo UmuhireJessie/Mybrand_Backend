@@ -23,7 +23,7 @@ import BlogValidator from "../middleware/blog-middleware.js";
 
 import { createComment, getAllComment, deleteComment } from "../controller/commcontroller.js";
 
-import { addnewUser, getAllUser, deteleUser, updateUser, loginUser, getOneUser} from "../controller/usercontroller.js";
+import { addnewUser, getAllUser, deteleUser, updateUser, loginUser, getOneUser, getUserInfo} from "../controller/usercontroller.js";
 
 import {isLogin, isAdmin} from "../middleware/isAuth-middleware.js"
 
@@ -58,6 +58,8 @@ router.get("/user/:id", getOneUser);
 router.delete("/user/:id", isLogin, deteleUser);
 router.patch("/user/:id", isLogin, updateUser);
 router.post("/user/login", loginUser);
+router.get("/userinfo", isLogin, getUserInfo);
+
 
 
 export default router;

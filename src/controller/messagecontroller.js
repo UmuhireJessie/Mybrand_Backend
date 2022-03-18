@@ -28,7 +28,7 @@ const createMessage = (req, res) => {
     message
         .save(message)
         .then(data => {
-            res.status(201).send(data)
+            res.status(201).send({message: data})
         })
         .catch(err => {
             res.status(500).send({

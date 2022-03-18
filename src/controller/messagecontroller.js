@@ -42,7 +42,7 @@ const createMessage = (req, res) => {
 const findMessage = async(req, res) => {
     const message = await MessageSchema.find({})
     .then(message => {
-        res.status(200).json({message: "All message are successfully retrieved"})
+        res.status(200).json({message: "All message are successfully retrieved", data: message})
     })
     .catch(err => {
         res.status(500).json({message:err.stock, Error: "Error occurred while retrieving message information"})

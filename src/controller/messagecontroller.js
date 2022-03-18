@@ -28,11 +28,11 @@ const createMessage = (req, res) => {
     message
         .save(message)
         .then(data => {
-            res.status(201).send({message: data})
+            res.status(201).json({message: "Messege has successfully sent", data: data})
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating a create operation"
+            res.status(500).json({
+                message: err.message, Error: "Some error occurred while creating a create operation"
             }); 
         });
 
@@ -42,10 +42,10 @@ const createMessage = (req, res) => {
 const findMessage = async(req, res) => {
     const message = await MessageSchema.find({})
     .then(message => {
-        res.status(200).send(message)
+        res.status(200).json({message: "All message are successfully retrieved"})
     })
     .catch(err => {
-        res.status(500).send({message:err.message ||"Error occurred while retrieving message information"})
+        res.status(500).json({message:err.stock, Error: "Error occurred while retrieving message information"})
     })
 }
 
@@ -72,13 +72,13 @@ const deleteMessage = async (req, res) => {
     const user = await MessageSchema.findByIdAndDelete(id)
         .then(data => {
             if (!data){
-                res.status(404).send({message:`Cannot Delete with id ${id}. Maybe id is wrong!`})
+                res.status(404).json({message:`Cannot Delete with id ${id}. Maybe id is wrong!`})
             }else{
-                res.send({message: "Message was deleted successfully!"})
+                res.json({message: "Message was deleted successfully!"})
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(500).json({
                 message: "Could not delete Message with id="+id
             });
         });      
@@ -92,13 +92,13 @@ const getOneMessage = async(req, res) => {
     const message = await MessageSchema.findById(id)
         .then(data => {
             if (!data){
-                res.status(404).send({message:`Cannot find with id ${id}. Maybe id is wrong!`})
+                res.status(404).json({message:`Cannot find with id ${id}. Maybe id is wrong!`})
             }else{
-                res.send({message: "Message Found!", data})
+                res.json({message: "Message Found!", data})
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(500).json({
                 message: "Could not find Message with id="+id
             });
         }); 

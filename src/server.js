@@ -1,6 +1,7 @@
 import express  from "express";
 import connectDB from "./database/dataconn.js";
 import router from "./router/router.js";
+import Router from "./router/blogRouter.js";
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -8,9 +9,11 @@ dotenv.config();
 
 const app = express();
 connectDB;
+app.use(cors());
 app.use( express.json());
-app.use(cors())
+
 app.use( router );
+app.use(Router);
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to my API")
 })

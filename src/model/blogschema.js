@@ -11,11 +11,15 @@ var blogSchema = new mongoose.Schema({
     },
     blogimage: {
         type: String,
+        contentType: String,
         required: true
     },
     detail: {
         type: String,
         required: true
+    },
+    slug: {
+        type: String, contentType: String
     },
     comments: [{
 

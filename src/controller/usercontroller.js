@@ -86,7 +86,7 @@ const loginUser = async (req, res) => {
             if (error) {
             console.log(error);
             res.json({
-                message: "incorrect password",
+                message: "incorrect Password or Email",
             });
             }
             if (user) {
@@ -101,7 +101,7 @@ const loginUser = async (req, res) => {
             });
             } else {
             res.status(403).json({
-                error: "Incorrect Password",
+                error: "Incorrect Password or Email",
             });
             }
         });

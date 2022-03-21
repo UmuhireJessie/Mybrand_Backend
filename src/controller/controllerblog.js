@@ -1,5 +1,8 @@
 import blogSchema from "../model/blogschema.js";
 import commentSchema from "../model/commentschema.js";
+import { fileUpload } from "../middleware/multer.js";
+import userSchema from "../model/userschema.js";
+import slug from "slug";
 
 // create and save new blog
 const createBlog = async (req, res) => {
@@ -10,27 +13,35 @@ const createBlog = async (req, res) => {
   }
 
   // new blog
-  const blog = new blogSchema({
-    title: req.body.title,
-    blogdescription: req.body.blogdescription,
-    blogimage: req.body.blogimage,
-    detail: req.body.detail,
-    date: Date.now(),
-  });
-
-  // save blog in the database
-  await blog
-    .save(blog)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while creating a create operation",
+  try {
+    const {title, blogdescription, detail} = req.body;
+    if (await blogSchema.findOne({ slug: slug(title) }))
+      res.status(400).json({
+        error: `This Blog with ${title} exists`,
       });
+
+    else {
+      const user = await userSchema.findById(req.user.userId);
+      req.body.blogimage = await fileUpload(req);
+      const blogs = await blogSchema.create({
+        title: title,
+        blogdescription: blogdescription,
+        blogimage: req.body.blogimage,
+        detail: detail,
+        slug: slug(title),
+        author: user.firstName,
+      });
+      res.status(201).json({
+        message: "Blog Has been saved succefull",
+        data: blogs,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Internal ${error}`,
     });
+  }
+  
 };
 
 // find and retrieve all blogs

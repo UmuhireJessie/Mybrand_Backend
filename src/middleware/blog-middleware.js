@@ -11,9 +11,6 @@ const blogValidator = async(req, res, next) => {
     if (req.body.detail == ""){
         res.status(204).json({message: "Please enter the detail of the blog"})
     };
-    // if (req.body.blogimage == ""){
-    //     res.status(204).json({message: "Please input the image of the blog"})
-    // };
 
     const title = req.body.title
     const blogExist = await blogSchema.find({title: title})

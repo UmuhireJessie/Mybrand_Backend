@@ -31,4 +31,8 @@ router.post(
   createBlog
 );
 
+router.get("/blog/:id", findOneBlog);
+router.patch("/blog/:id", isLogin, updateBlog);
+router.delete("/blog/:id", isLogin, deleteBlog);
+
 export default router;

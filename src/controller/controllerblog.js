@@ -63,9 +63,9 @@ const findAllBlog = async (req, res) => {
 
 // find and retrieve one blog
 const findOneBlog = async (req, res) => {
-  const blog = await blogSchema.findById(req.params.id).then((blog) => {
-    res.status(200).json({blog});
-  });
+  const blog = await blogSchema.findById(req.params.id)
+
+  res.status(200).json({blog});
 };
 
 // Update the information on the blog

@@ -65,7 +65,7 @@ const findAllBlog = async (req, res) => {
 const findOneBlog = async (req, res) => {
   const blog = await blogSchema.findById(req.params.id)
 
-  res.status(200).json({blog});
+  res.status(200).json({blog})
 };
 
 // Update the information on the blog

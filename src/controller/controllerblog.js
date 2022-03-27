@@ -68,13 +68,44 @@ const findOneBlog = async (req, res) => {
   res.status(200).json({blog})
 };
 
-// Update the information on the blog
+// Update the information and the image on the blog
 const updateBlog = async (req, res) => {
   try {
-    const blog = await blogSchema.findByIdAndUpdate(req.params.id, req.body);
-    res.status(200).send("Information has been updated");
+    const blogId = req.params.id;
+    if (!(await blogSchema.findById(blogId)))
+      return res
+        .status(404)
+        .json({ error: `no Blog found with this id ${blogId}` });
+    req.body.blogimage = await fileUpload(req);
+    const blogUpdate = await blogSchema.findByIdAndUpdate(blogId, req.body);
+    res.status(201).json({
+      message: "Blog has been update successfully!",
+      data: blogUpdate,
+    });
   } catch (error) {
-    res.status(500).send(`Error has occurred: ${error}`);
+    res.status(500).json({
+      error: `Internal Server error: ${error}`,
+    });
+  }
+};
+
+// Update blog information with out image
+const updateNoImg = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    if (!(await blogSchema.findById(blogId)))
+      return res
+        .status(404)
+        .json({ error: `no Blog found with this id ${blogId}` });
+    const updateBlog = await blogSchema.findByIdAndUpdate(blogId, req.body);
+    res.status(201).json({
+      message: "Blog has been updated successfully!",
+      data: updateBlog,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: `Internal Server error: ${error}`,
+    });
   }
 };
 
@@ -95,4 +126,4 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-export { createBlog, findAllBlog, findOneBlog, updateBlog, deleteBlog };
+export { createBlog, findAllBlog, findOneBlog, updateBlog, updateNoImg, deleteBlog };

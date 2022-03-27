@@ -1,10 +1,17 @@
 import express from "express";
 
-import { createBlog, findAllBlog, findOneBlog, updateBlog, deleteBlog} from "../controller/controllerblog.js";
-  
+import {
+  createBlog,
+  findAllBlog,
+  findOneBlog,
+  updateBlog,
+  updateNoImg,
+  deleteBlog,
+} from "../controller/controllerblog.js";
+
 import blogValidator from "../middleware/blog-middleware.js";
 
-import {isLogin, isAdmin} from "../middleware/isAuth-middleware.js";
+import { isLogin, isAdmin } from "../middleware/isAuth-middleware.js";
 
 import multer from "multer";
 
@@ -18,21 +25,24 @@ const fileFilter = (req, file, cb) => {
     cb("invalid image file!", false);
   }
 };
+
 const upload = multer({ storage, fileFilter });
 
 router.get("/blog", findAllBlog);
+
 router.post(
   "/blog",
   isLogin,
   isAdmin,
-  upload.single("blogimage"),  
+  upload.single("blogimage"),
   blogValidator,
-
   createBlog
 );
 
+router.patch("/blog/:id", isLogin, isAdmin, blogValidator, updateNoImg);
+
 router.get("/blog/:id", findOneBlog);
-router.patch("/blog/:id", isLogin, updateBlog);
-router.delete("/blog/:id", isLogin, deleteBlog);
+router.patch("/blog-image/:id", isLogin, isAdmin, blogValidator, updateBlog);
+router.delete("/blog/:id", isLogin, isAdmin, deleteBlog);
 
 export default router;

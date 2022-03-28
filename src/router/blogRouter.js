@@ -43,7 +43,7 @@ router.patch("/blog/:id", isLogin, isAdmin, blogValidator, updateNoImg);
 
 router.get("/blog/:id", findOneBlog);
 
-router.patch("/blog-image/:id", isLogin, isAdmin, blogValidator, updateBlog);
+router.patch("/blogimage/:id", isLogin, isAdmin, upload.single("blogimage"), blogValidator, updateBlog);
 
 router.delete("/blog/:id", isLogin, isAdmin, deleteBlog);
 

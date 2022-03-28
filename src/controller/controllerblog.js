@@ -14,12 +14,11 @@ const createBlog = async (req, res) => {
 
   // new blog
   try {
-    const {title, blogdescription, detail} = req.body;
+    const { title, blogdescription, detail } = req.body;
     if (await blogSchema.findOne({ slug: slug(title) }))
       res.status(400).json({
         error: `This Blog with ${title} exists`,
       });
-
     else {
       const user = await userSchema.findById(req.user.userId);
       req.body.blogimage = await fileUpload(req);
@@ -41,7 +40,6 @@ const createBlog = async (req, res) => {
       error: `Internal ${error}`,
     });
   }
-  
 };
 
 // find and retrieve all blogs
@@ -52,20 +50,18 @@ const findAllBlog = async (req, res) => {
       res.json({ allBlogs: blog, count: blog.length });
     })
     .catch((err) => {
-      res
-        .status(500)
-        .send({
-          message:
-            err.message || "Error occurred while retrieving blog information",
-        });
+      res.status(500).send({
+        message:
+          err.message || "Error occurred while retrieving blog information",
+      });
     });
 };
 
 // find and retrieve one blog
 const findOneBlog = async (req, res) => {
-  const blog = await blogSchema.findById(req.params.id)
+  const blog = await blogSchema.findById(req.params.id);
 
-  res.status(200).json({blog})
+  res.status(200).json({ blog });
 };
 
 // Update the information and the image on the blog
@@ -114,16 +110,23 @@ const deleteBlog = async (req, res) => {
   try {
     const blog = await blogSchema.findById(req.params.id);
     if (blog) {
-        const deleteBlog = await blogSchema.findByIdAndDelete(req.params.id);
-        const commentDel = await commentSchema.deleteMany({
-        blogId: req.params.id,       
+      const deleteBlog = await blogSchema.findByIdAndDelete(req.params.id);
+      const commentDel = await commentSchema.deleteMany({
+        blogId: req.params.id,
       });
       res.status(200).json({ message: "The blog has been deleted" });
     }
-    res.status(404).json({ Error: "Invalid blog id"});
+    res.status(404).json({ Error: "Invalid blog id" });
   } catch (error) {
     res.status(500).json({ message: `Error has occurred: ${error}` });
   }
 };
 
-export { createBlog, findAllBlog, findOneBlog, updateBlog, updateNoImg, deleteBlog };
+export {
+  createBlog,
+  findAllBlog,
+  findOneBlog,
+  updateBlog,
+  updateNoImg,
+  deleteBlog,
+};

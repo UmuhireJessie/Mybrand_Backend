@@ -75,7 +75,7 @@ const updateBlog = async (req, res) => {
     if (!(await blogSchema.findById(blogId)))
       return res
         .status(404)
-        .json({ error: `no Blog found with this id ${blogId}` });
+        .json({ error: `Blog with id: ${blogId} does not exists` });
     req.body.blogimage = await fileUpload(req);
     const blogUpdate = await blogSchema.findByIdAndUpdate(blogId, req.body);
     res.status(201).json({
@@ -96,7 +96,7 @@ const updateNoImg = async (req, res) => {
     if (!(await blogSchema.findById(blogId)))
       return res
         .status(404)
-        .json({ error: `no Blog found with this id ${blogId}` });
+        .json({ error: `Blog with id: ${blogId} does not exists` });
     const updateBlog = await blogSchema.findByIdAndUpdate(blogId, req.body);
     res.status(201).json({
       message: "Blog has been updated successfully!",

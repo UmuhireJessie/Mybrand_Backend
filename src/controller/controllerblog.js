@@ -31,7 +31,7 @@ const createBlog = async (req, res) => {
         author: user.firstName,
       });
       res.status(201).json({
-        message: "Blog Has been saved succefull",
+        message: "Blog Has been saved successfully",
         data: blogs,
       });
     }
@@ -45,7 +45,9 @@ const createBlog = async (req, res) => {
 // find and retrieve all blogs
 const findAllBlog = async (req, res) => {
   const blog = await blogSchema
-    .find({})
+    .find({}).sort({
+      date: -1,
+    })
     .then((blog) => {
       res.json({ allBlogs: blog, count: blog.length });
     })
@@ -59,9 +61,19 @@ const findAllBlog = async (req, res) => {
 
 // find and retrieve one blog
 const findOneBlog = async (req, res) => {
-  const blog = await blogSchema.findById(req.params.id);
+  try {
+    const blogId = req.params.id;
+    const blog = await blogSchema.findById(blogId);
 
-  res.status(200).json({ blog });
+    if (!blog)
+      return res.status(404).json({ error: `blog with ${blogId} does not exists` });
+    res.status(200).json({ blog });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error"
+    });
+  }
+  
 };
 
 // Update the information and the image on the blog
@@ -80,7 +92,7 @@ const updateBlog = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      error: `Internal Server error: ${error}`,
+      error: `Internal server error: ${error}`,
     });
   }
 };

@@ -9,7 +9,9 @@ dotenv.config();
 
 const app = express();
 connectDB;
-app.use(cors());
+app.use(cors({
+  origin: "https://andelamybrandapi.herokuapp.com/"
+}));
 app.use( express.json());
 
 app.use( router );

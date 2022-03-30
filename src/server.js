@@ -9,10 +9,7 @@ dotenv.config();
 
 const app = express();
 connectDB;
-app.use(cors({
-   origin: "http://127.0.0.1:5502"
-}
-));
+app.use(cors());
 app.use( express.json());
 
 app.use( router );
